@@ -1,4 +1,4 @@
-pub fn run(input: Vec<u32>) -> (u32, u32) {
+pub fn run(input: Vec<Option<u32>>) -> (u32, u32) {
     (result1(&input), result2(&input))
 }
 
