@@ -17,7 +17,7 @@ pub fn read_input<T: std::str::FromStr>(filename: &str) -> Result<Vec<Option<T>>
 }
 
 pub fn top(n: u32, arr: Vec<u32>) -> Vec<u32> {
-    let mut t: Vec<u32> = (0..n).map(|u| 0).collect();
+    let mut t: Vec<u32> = (0..n).map(|_| 0).collect();
     for n in arr {
         let t2 = t.clone();
         for (i, u) in t2.iter().enumerate() {
@@ -67,7 +67,6 @@ mod tests {
         let input = vec![1, 5, 7, 3, 4, 9, 2, 4, 8, 5, 2, 3, 6, 8];
         let expected = [9, 8, 8];
         let result = top(3, input);
-        println!("{:#?}", result);
 
         assert_eq!(result, expected);
     }

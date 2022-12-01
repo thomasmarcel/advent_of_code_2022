@@ -1,4 +1,4 @@
-use crate::utils::read_input;
+use crate::utils::{read_input, top};
 
 pub fn run() -> (u32, u32) {
     let filename = "./resources/input/day1.txt";
@@ -36,21 +36,20 @@ fn result1(input: &Vec<Option<u32>>) -> u32 {
 fn result2(input: &Vec<Option<u32>>) -> u32 {
     let mut elves: Vec<u32> = vec![];
     let mut sum = 0;
-    let mut max = 0;
 
     for cal in input {
         match cal {
             Some(c) => sum += c,
             None => {
                 elves.push(sum);
-                if sum > max {
-                    max = sum;
-                }
                 sum = 0;
             }
         }
     }
-    max
+
+    let top3 = top(3, elves);
+
+    top3.iter().sum()
 }
 
 #[cfg(test)]
