@@ -33,23 +33,23 @@ fn outcome(opponent: &Choice, player: &Choice) -> Outcome {
     }
 }
 
-fn to_play(opponent: &Choice, outcome: Outcome) -> Choice {
+fn to_play(opponent: &Choice, outcome: &Outcome) -> Choice {
     match outcome {
         Outcome::Draw => *opponent,
         Outcome::Loser => match opponent {
-            Choice::Rock => Choice::Paper,
-            Choice::Paper => Choice::Scissors,
-            Choice::Scissors => Choice::Rock,
-        },
-        Outcome::Winner => match opponent {
             Choice::Rock => Choice::Scissors,
             Choice::Paper => Choice::Rock,
             Choice::Scissors => Choice::Paper,
         },
+        Outcome::Winner => match opponent {
+            Choice::Rock => Choice::Paper,
+            Choice::Paper => Choice::Scissors,
+            Choice::Scissors => Choice::Rock,
+        },
     }
 }
 
-fn convert(input: &str) -> Choice {
+fn convert_to_choice(input: &str) -> Choice {
     match input {
         "A" => Choice::Rock,
         "X" => Choice::Rock,
@@ -58,6 +58,15 @@ fn convert(input: &str) -> Choice {
         "C" => Choice::Scissors,
         "Z" => Choice::Scissors,
         _ => panic!("Wrong choice: {}", input),
+    }
+}
+
+fn convert_to_outcome(input: &str) -> Outcome {
+    match input {
+        "X" => Outcome::Loser,
+        "Y" => Outcome::Draw,
+        "Z" => Outcome::Winner,
+        _ => panic!("Wrong outcome: {}", input),
     }
 }
 
@@ -80,8 +89,8 @@ fn result1(input: &Vec<Option<String>>) -> u32 {
     for game in input {
         if game.as_ref().unwrap().len() > 0 {
             let game_arr: Vec<&str> = game.as_ref().unwrap().split(" ").collect();
-            let opponent = convert(game_arr[0]);
-            let player = convert(game_arr[1]);
+            let opponent = convert_to_choice(game_arr[0]);
+            let player = convert_to_choice(game_arr[1]);
             let result = outcome(&opponent, &player);
             points += result as u32 + player as u32;
         }
@@ -90,7 +99,18 @@ fn result1(input: &Vec<Option<String>>) -> u32 {
 }
 
 fn result2(input: &Vec<Option<String>>) -> u32 {
-    0
+    // println!("{:#?}", input);
+    let mut points = 0;
+    for game in input {
+        if game.as_ref().unwrap().len() > 0 {
+            let game_arr: Vec<&str> = game.as_ref().unwrap().split(" ").collect();
+            let opponent = convert_to_choice(game_arr[0]);
+            let result = convert_to_outcome(game_arr[1]);
+            let player = to_play(&opponent, &result);
+            points += result as u32 + player as u32;
+        }
+    }
+    points
 }
 
 #[cfg(test)]
@@ -105,5 +125,15 @@ mod tests {
             read_input(filename).expect("Unable to read the input file");
         let result: u32 = result1(&input);
         assert_eq!(result, 15);
+    }
+
+    #[test]
+    fn test_result2() {
+        let filename = "./resources/input/day2_sample.txt";
+
+        let input: Vec<Option<String>> =
+            read_input(filename).expect("Unable to read the input file");
+        let result: u32 = result2(&input);
+        assert_eq!(result, 12);
     }
 }
