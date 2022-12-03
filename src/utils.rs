@@ -32,9 +32,27 @@ pub fn top(n: u32, arr: Vec<u32>) -> Vec<u32> {
     t
 }
 
+struct Letter {
+    letter: char,
+    value: u8,
+}
+
+pub fn alphabet() -> Vec<char> {
+    // (b'a'..=b'Z') // Start as u8
+    //     .map(|c| c as char) // Convert all to chars
+    //     .filter(|c| c.is_alphabetic()) // Filter only alphabetic chars
+    //     .collect::<Vec<_>>() // Collect as Vec<char>
+    (b'a'..=b'z')
+        .map(|c| c as char) // Convert all to chars
+        .chain(
+            (b'A'..=b'Z').map(|c| c as char), // Convert all to chars
+        )
+        .collect::<Vec<_>>() // Collect as Vec<char>
+}
+
 #[cfg(test)]
 mod tests {
-    use super::{read_input, top};
+    use super::{alphabet, read_input, top};
 
     #[test]
     fn test_read_input() {
@@ -69,5 +87,18 @@ mod tests {
         let result = top(3, input);
 
         assert_eq!(result, expected);
+    }
+
+    #[test]
+    fn test_alphabet() {
+        let alpha = alphabet();
+        let expected = vec![
+            'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q',
+            'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H',
+            'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y',
+            'Z',
+        ];
+
+        assert_eq!(alpha, expected);
     }
 }
