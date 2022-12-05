@@ -32,11 +32,6 @@ pub fn top(n: u32, arr: Vec<u32>) -> Vec<u32> {
     t
 }
 
-struct Letter {
-    letter: char,
-    value: u8,
-}
-
 pub fn alphabet() -> Vec<char> {
     // (b'a'..=b'Z') // Start as u8
     //     .map(|c| c as char) // Convert all to chars
